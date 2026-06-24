@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Pool, RowDataPacket, createPool } from 'mysql2/promise';
 
 export type PrimeDatabase = 'prime' | 'auto';
+type SqlValue = string | number | boolean | Date | null;
 
 @Injectable()
 export class DatabaseService implements OnModuleDestroy {
@@ -15,7 +16,7 @@ export class DatabaseService implements OnModuleDestroy {
     };
   }
 
-  async query<T extends RowDataPacket = RowDataPacket>(database: PrimeDatabase, sql: string, values: any[] = []): Promise<T[]> {
+  async query<T extends RowDataPacket = RowDataPacket>(database: PrimeDatabase, sql: string, values: SqlValue[] = []): Promise<T[]> {
     const [rows] = await this.pools[database].execute<T[]>(sql, values);
     return rows;
   }
@@ -33,12 +34,19 @@ export class DatabaseService implements OnModuleDestroy {
   }
 
   private createPool(config: ConfigService, prefix: 'DB_' | 'DB_AUTO_'): Pool {
+    // Prime historically used one connection in local environments.  Keeping the
+    // fallback here lets the migrated API use that same .env while deployments
+    // can still configure a separate AUTO database explicitly.
+    const fallbackPrefix = prefix === 'DB_AUTO_' ? 'DB_' : prefix;
+    const value = (key: string) =>
+      config.get<string>(`${prefix}${key}`) ?? config.getOrThrow<string>(`${fallbackPrefix}${key}`);
+
     return createPool({
-      host: config.getOrThrow<string>(`${prefix}HOST`),
-      port: Number(config.get<string>(`${prefix}PORT`) ?? 3306),
-      user: config.getOrThrow<string>(`${prefix}USERNAME`),
-      password: config.getOrThrow<string>(`${prefix}PASSWORD`),
-      database: config.getOrThrow<string>(`${prefix}DATABASE`),
+      host: value('HOST'),
+      port: Number(config.get<string>(`${prefix}PORT`) ?? config.get<string>(`${fallbackPrefix}PORT`) ?? 3306),
+      user: value('USERNAME'),
+      password: value('PASSWORD'),
+      database: value('DATABASE'),
       waitForConnections: true,
       connectionLimit: 10,
       namedPlaceholders: true,

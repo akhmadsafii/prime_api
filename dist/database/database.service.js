@@ -36,12 +36,14 @@ let DatabaseService = class DatabaseService {
         await Promise.all(Object.values(this.pools).map((pool) => pool.end()));
     }
     createPool(config, prefix) {
+        const fallbackPrefix = prefix === 'DB_AUTO_' ? 'DB_' : prefix;
+        const value = (key) => config.get(`${prefix}${key}`) ?? config.getOrThrow(`${fallbackPrefix}${key}`);
         return (0, promise_1.createPool)({
-            host: config.getOrThrow(`${prefix}HOST`),
-            port: Number(config.get(`${prefix}PORT`) ?? 3306),
-            user: config.getOrThrow(`${prefix}USERNAME`),
-            password: config.getOrThrow(`${prefix}PASSWORD`),
-            database: config.getOrThrow(`${prefix}DATABASE`),
+            host: value('HOST'),
+            port: Number(config.get(`${prefix}PORT`) ?? config.get(`${fallbackPrefix}PORT`) ?? 3306),
+            user: value('USERNAME'),
+            password: value('PASSWORD'),
+            database: value('DATABASE'),
             waitForConnections: true,
             connectionLimit: 10,
             namedPlaceholders: true,

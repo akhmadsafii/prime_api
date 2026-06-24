@@ -15,13 +15,24 @@ const clickhouse_module_1 = require("./clickhouse/clickhouse.module");
 const dashboard_module_1 = require("./modules/dashboard/dashboard.module");
 const database_module_1 = require("./database/database.module");
 const prime_module_1 = require("./modules/prime/prime.module");
+const auth_module_1 = require("./modules/auth/auth.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
-    (0, common_1.Module)({ imports: [config_1.ConfigModule.forRoot({
+    (0, common_1.Module)({
+        imports: [
+            config_1.ConfigModule.forRoot({
                 isGlobal: true,
                 envFilePath: ['.env', (0, node_path_1.join)(process.cwd(), '../../../prime/prime_api/.env'), (0, node_path_1.join)(process.cwd(), '../../prime/prime_api/.env'), (0, node_path_1.join)(process.cwd(), '../prime/prime_api/.env')],
-            }), nestjs_pino_1.LoggerModule.forRoot({ pinoHttp: { transport: { target: 'pino-pretty' } } }), clickhouse_module_1.ClickHouseModule, dashboard_module_1.DashboardModule, database_module_1.DatabaseModule, prime_module_1.PrimeModule] })
+            }),
+            nestjs_pino_1.LoggerModule.forRoot({ pinoHttp: { transport: { target: 'pino-pretty' } } }),
+            clickhouse_module_1.ClickHouseModule,
+            dashboard_module_1.DashboardModule,
+            database_module_1.DatabaseModule,
+            auth_module_1.AuthModule,
+            prime_module_1.PrimeModule,
+        ],
+    })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map
