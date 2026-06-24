@@ -1,11 +1,15 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PrimeService } from './prime.service';
+import { PrimeSalesService } from './sales/prime-sales.service';
 
 @ApiTags('prime')
 @Controller('prime')
 export class PrimeController {
-  constructor(private readonly prime: PrimeService) {}
+  constructor(
+    private readonly prime: PrimeService,
+    private readonly sales: PrimeSalesService,
+  ) {}
 
   @Get('health')
   health() {
@@ -18,7 +22,7 @@ export class PrimeController {
     if (date && Number.isNaN(Date.parse(date))) {
       throw new BadRequestException('tgl must be a valid date');
     }
-    return this.prime.panelSales(date, plant);
+    return this.sales.getSummary(date, plant);
   }
 
   @Get('panel/production/get_data')

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { RowDataPacket } from 'mysql2/promise';
-import { DatabaseService } from '../../database/database.service';
+import { DatabaseService } from '../../infrastructure/database/database.service';
 
 @Injectable()
 export class PrimeService {

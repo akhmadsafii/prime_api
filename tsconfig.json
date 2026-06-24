@@ -13,11 +13,5 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/main.ts",
-    "src/app.module.ts",
-    "src/database/**/*.ts",
-    "src/clickhouse/**/*.ts",
-    "src/modules/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

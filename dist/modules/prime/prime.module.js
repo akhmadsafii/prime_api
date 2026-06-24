@@ -10,10 +10,14 @@ exports.PrimeModule = void 0;
 const common_1 = require("@nestjs/common");
 const prime_controller_1 = require("./prime.controller");
 const prime_service_1 = require("./prime.service");
+const prime_sales_service_1 = require("./sales/prime-sales.service");
 let PrimeModule = class PrimeModule {
 };
 exports.PrimeModule = PrimeModule;
 exports.PrimeModule = PrimeModule = __decorate([
-    (0, common_1.Module)({ controllers: [prime_controller_1.PrimeController], providers: [prime_service_1.PrimeService] })
+    (0, common_1.Module)({
+        controllers: [prime_controller_1.PrimeController],
+        providers: [prime_service_1.PrimeService, prime_sales_service_1.PrimeSalesService],
+    })
 ], PrimeModule);
 //# sourceMappingURL=prime.module.js.map

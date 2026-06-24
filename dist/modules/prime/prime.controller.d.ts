@@ -1,7 +1,9 @@
 import { PrimeService } from './prime.service';
+import { PrimeSalesService } from './sales/prime-sales.service';
 export declare class PrimeController {
     private readonly prime;
-    constructor(prime: PrimeService);
+    private readonly sales;
+    constructor(prime: PrimeService, sales: PrimeSalesService);
     health(): Promise<{
         prime: boolean;
         auto: boolean;

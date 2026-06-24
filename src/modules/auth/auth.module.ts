@@ -1,9 +1,11 @@
-import { Module } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtModule } from '@nestjs/jwt';
-import { DatabaseModule } from '../../database/database.module';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { Module } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { JwtModule } from "@nestjs/jwt";
+import { DatabaseModule } from '../../infrastructure/database/database.module';
+import { AuthController } from "./auth.controller";
+import { AuthService } from "./auth.service";
+import { AutoUserRepository } from "./auto-user.repository";
+import { LdapAuthService } from "./ldap-auth.service";
 
 @Module({
   imports: [
@@ -11,12 +13,12 @@ import { AuthService } from './auth.service';
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
-        secret: config.getOrThrow<string>('JWT_SECRET'),
-        signOptions: { expiresIn: '1d' },
+        secret: config.getOrThrow<string>("JWT_SECRET"),
+        signOptions: { expiresIn: "1d" },
       }),
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, AutoUserRepository, LdapAuthService],
 })
 export class AuthModule {}

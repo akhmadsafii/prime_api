@@ -10,9 +10,11 @@ exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const jwt_1 = require("@nestjs/jwt");
-const database_module_1 = require("../../database/database.module");
+const database_module_1 = require("../../infrastructure/database/database.module");
 const auth_controller_1 = require("./auth.controller");
 const auth_service_1 = require("./auth.service");
+const auto_user_repository_1 = require("./auto-user.repository");
+const ldap_auth_service_1 = require("./ldap-auth.service");
 let AuthModule = class AuthModule {
 };
 exports.AuthModule = AuthModule;
@@ -23,13 +25,13 @@ exports.AuthModule = AuthModule = __decorate([
             jwt_1.JwtModule.registerAsync({
                 inject: [config_1.ConfigService],
                 useFactory: (config) => ({
-                    secret: config.getOrThrow('JWT_SECRET'),
-                    signOptions: { expiresIn: '1d' },
+                    secret: config.getOrThrow("JWT_SECRET"),
+                    signOptions: { expiresIn: "1d" },
                 }),
             }),
         ],
         controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService],
+        providers: [auth_service_1.AuthService, auto_user_repository_1.AutoUserRepository, ldap_auth_service_1.LdapAuthService],
     })
 ], AuthModule);
 //# sourceMappingURL=auth.module.js.map

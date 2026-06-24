@@ -5,7 +5,7 @@
     "dev": "nest start --watch",
     "build": "nest build",
     "start": "node dist/main",
-    "lint": "eslint src/main.ts src/app.module.ts src/database src/clickhouse src/modules --ext .ts"
+    "lint": "eslint src --ext .ts"
   },
   "dependencies": {
     "@clickhouse/client": "^1.12.0",

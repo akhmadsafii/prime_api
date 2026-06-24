@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.DashboardService = void 0;
 const common_1 = require("@nestjs/common");
-const clickhouse_service_1 = require("../../clickhouse/clickhouse.service");
+const clickhouse_service_1 = require("../../infrastructure/clickhouse/clickhouse.service");
 let DashboardService = class DashboardService {
     clickhouse;
     constructor(clickhouse) {

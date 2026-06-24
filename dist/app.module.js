@@ -11,11 +11,12 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const nestjs_pino_1 = require("nestjs-pino");
 const node_path_1 = require("node:path");
-const clickhouse_module_1 = require("./clickhouse/clickhouse.module");
-const dashboard_module_1 = require("./modules/dashboard/dashboard.module");
-const database_module_1 = require("./database/database.module");
-const prime_module_1 = require("./modules/prime/prime.module");
+const env_validation_1 = require("./config/env.validation");
+const clickhouse_module_1 = require("./infrastructure/clickhouse/clickhouse.module");
+const database_module_1 = require("./infrastructure/database/database.module");
 const auth_module_1 = require("./modules/auth/auth.module");
+const dashboard_module_1 = require("./modules/dashboard/dashboard.module");
+const prime_module_1 = require("./modules/prime/prime.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -24,9 +25,17 @@ exports.AppModule = AppModule = __decorate([
         imports: [
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
-                envFilePath: ['.env', (0, node_path_1.join)(process.cwd(), '../../../prime/prime_api/.env'), (0, node_path_1.join)(process.cwd(), '../../prime/prime_api/.env'), (0, node_path_1.join)(process.cwd(), '../prime/prime_api/.env')],
+                envFilePath: [
+                    '.env',
+                    (0, node_path_1.join)(process.cwd(), '../../../prime/prime_api/.env'),
+                    (0, node_path_1.join)(process.cwd(), '../../prime/prime_api/.env'),
+                    (0, node_path_1.join)(process.cwd(), '../prime/prime_api/.env'),
+                ],
+                validate: env_validation_1.validateEnvironment,
             }),
-            nestjs_pino_1.LoggerModule.forRoot({ pinoHttp: { transport: { target: 'pino-pretty' } } }),
+            nestjs_pino_1.LoggerModule.forRoot({
+                pinoHttp: { transport: { target: "pino-pretty" } },
+            }),
             clickhouse_module_1.ClickHouseModule,
             dashboard_module_1.DashboardModule,
             database_module_1.DatabaseModule,

@@ -16,10 +16,13 @@ exports.PrimeController = void 0;
 const common_1 = require("@nestjs/common");
 const swagger_1 = require("@nestjs/swagger");
 const prime_service_1 = require("./prime.service");
+const prime_sales_service_1 = require("./sales/prime-sales.service");
 let PrimeController = class PrimeController {
     prime;
-    constructor(prime) {
+    sales;
+    constructor(prime, sales) {
         this.prime = prime;
+        this.sales = sales;
     }
     health() {
         return this.prime.health();
@@ -28,7 +31,7 @@ let PrimeController = class PrimeController {
         if (date && Number.isNaN(Date.parse(date))) {
             throw new common_1.BadRequestException('tgl must be a valid date');
         }
-        return this.prime.panelSales(date, plant);
+        return this.sales.getSummary(date, plant);
     }
     panelProduction(date, plant) {
         if (date && Number.isNaN(Date.parse(date)))
@@ -62,6 +65,7 @@ __decorate([
 exports.PrimeController = PrimeController = __decorate([
     (0, swagger_1.ApiTags)('prime'),
     (0, common_1.Controller)('prime'),
-    __metadata("design:paramtypes", [prime_service_1.PrimeService])
+    __metadata("design:paramtypes", [prime_service_1.PrimeService,
+        prime_sales_service_1.PrimeSalesService])
 ], PrimeController);
 //# sourceMappingURL=prime.controller.js.map

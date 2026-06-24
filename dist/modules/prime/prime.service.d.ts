@@ -1,4 +1,4 @@
-import { DatabaseService } from '../../database/database.service';
+import { DatabaseService } from '../../infrastructure/database/database.service';
 export declare class PrimeService {
     private readonly database;
     constructor(database: DatabaseService);

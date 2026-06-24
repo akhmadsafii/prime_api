@@ -1,26 +1,18 @@
-import { ConfigService } from '@nestjs/config';
-import { JwtService } from '@nestjs/jwt';
-import { DatabaseService } from '../../database/database.service';
-import { LoginDto } from './auth.dto';
+import { JwtService } from "@nestjs/jwt";
+import { AutoUserRepository } from "./auto-user.repository";
+import { LoginDto } from "./auth.dto";
+import { AuthenticatedUser } from "./auth.types";
+import { LdapAuthService } from "./ldap-auth.service";
 export declare class AuthService {
-    private readonly config;
-    private readonly database;
+    private readonly ldap;
+    private readonly users;
     private readonly jwt;
-    constructor(config: ConfigService, database: DatabaseService, jwt: JwtService);
+    constructor(ldap: LdapAuthService, users: AutoUserRepository, jwt: JwtService);
     login(credentials: LoginDto): Promise<{
         authToken: string;
         tokenType: string;
         expiresIn: number;
-        user: {
-            id: string;
-            userid: string;
-            name: string;
-            email: string;
-            avatar: string | null;
-            plant: string | null;
-        };
+        user: AuthenticatedUser;
     }>;
-    private authenticateLdap;
-    private escapeLdapFilter;
     private firstAttribute;
 }
